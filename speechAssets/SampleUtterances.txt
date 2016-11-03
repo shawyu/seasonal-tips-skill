@@ -1,0 +1,5 @@
+TipIntent tell me how i can save energy
+TipIntent give me a tip
+TipIntent i want a tip
+TipIntent tip please
+TipIntent how can i save energy
