@@ -24,8 +24,8 @@ SeasonalTipsSkill.prototype.eventHandlers.onLaunch = function(request, session, 
         + ", sessionId: " + session.sessionId);
 
     // get welcome response(response)
-    var speechText = 'Welcome to this useful skill!',
-        repromptText = 'For instructions on what you can say, please say help me.';
+    var speechText = 'With seasonal tips, you can get helpful energy savings tips for any season of the year. You can ask for a tip for today, or a tip for any particular season of the year. Which season would like a tip for?',
+        repromptText = 'For examples of what you can say, please say help me.';
 
     response.ask(
         getSSMLSpeech(speechText),
@@ -39,15 +39,37 @@ SeasonalTipsSkill.prototype.eventHandlers.onSessionEnded = function(request, ses
         + ", sessionId: " + session.sessionId);
 }
 
+function respondTipForCurrentSeason(response) {
+    var season = getSeasonForMoment(moment()),
+        speechText = tipsService.getTipTextForSeason(season);
+
+    response.tell(getSSMLSpeech(speechText));
+}
+
 SeasonalTipsSkill.prototype.intentHandlers = {
     "TipIntent": function(intent, session, response) {
-        var season = getSeasonForMoment(moment()),
+        respondTipForCurrentSeason(response);
+    },
+    "TipSeasonIntent": function(intent, session, response) {
+        var seasonSlot = intent.slots.season;
+
+        if (!seasonSlot) {
+            respondTipForCurrentSeason(response);
+            return;
+        }
+
+        var season = seasonSlot.value,
             speechText = tipsService.getTipTextForSeason(season);
+
+        if (!speechText) {
+            respondTipForCurrentSeason(response);
+            return;
+        }
 
         response.tell(getSSMLSpeech(speechText));
     },
     "AMAZON.HelpIntent": function(intent, session, response) {
-        var speechText = 'How can I help?';
+        var speechText = 'Examples of what you can ask are, \'give me a tip\' or \'i want a tip for spring\'';
 
         response.ask(
             getSSMLSpeech(speechText),
@@ -80,7 +102,7 @@ function getSeasonForMoment(moment) {
 
 function getSSMLSpeech(text) {
     return {
-        speech: text,
+        speech: '<speak>' + text + '</speak>',
         type: AlexaSkill.speechOutputType.SSML
     }
 }

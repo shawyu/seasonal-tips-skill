@@ -4,6 +4,15 @@
       "intent": "TipIntent"
     },
     {
+      "intent": "TipSeasonIntent",
+      "slots": [
+        {
+          "name": "season",
+          "type": "LIST_OF_SEASONS"
+        }
+      ]
+    },
+    {
       "intent": "AMAZON.HelpIntent"
     },
     {
