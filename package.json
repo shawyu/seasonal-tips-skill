@@ -2,18 +2,19 @@
     "name": "seasonal-tips-skill",
     "version": "0.0.1",
     "author": "Shaw Yu <shaw.yu@oracle.com",
-    "main": "lib/index.js",
+    "main": "src/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.va.opower.it/shaw-yu/seasonal-tips-skill.git"
     },
     "dependencies": {
-        "alexa-sdk": "^1.0.6"
+        "alexa-sdk": "^1.0.6",
+        "moment-timezone": "^0.5.7"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "files": [
-        "lib", "test", "speechAssets", "README.md"
+        "src", "lib", "test", "speechAssets", "README.md"
     ]
 }
